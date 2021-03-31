@@ -77,7 +77,7 @@ shinyServer = function(input, output, session)
     withProgress(
       {
         # browser()
-        cytofkit(fcsFiles = inputs[["fcsFiles"]],
+        cytofkit2(fcsFiles = inputs[["fcsFiles"]],
                  markers = input$markers,
                  projectName = input$project_name,
                  mergeMethod = input$merge_method,
