@@ -3,9 +3,9 @@ title: "Cytofkit2 Report"
 author:
 - name: CJMLab
   affiliation: Immunology Network (SIgN), A*STAR
-  email: Chen\_Jinmiao@immunol.a-star.edu.sg
+  email: Chen_Jinmiao@immunol.a-star.edu.sg
 output:
-  BiocStyle::pdf_document
+  BiocStyle::html_document
 abstract: |
   ####* Abstract *####
 vignette: |
@@ -13,6 +13,15 @@ vignette: |
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+<style type="text/css">
+.main-container {
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
 ```{r, echo = F}
 library(pheatmap)
 ```
