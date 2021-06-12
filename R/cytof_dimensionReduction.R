@@ -17,6 +17,7 @@
 #' 
 #' @importFrom vegan vegdist spantree isomap
 #' @importFrom Rtsne Rtsne
+#' @import umap
 #' @importFrom destiny DiffusionMap
 #' @importFrom utils compareVersion packageVersion
 #' @import stats reticulate
@@ -28,7 +29,7 @@
 #' out_data <- cytof_dimReduction(in_data, markers = markers, method = "tsne")
 #' @note Currently, \code{diffusionmap} will not work with R 3.4.0, due to an issue with the latest CRAN release of its dependency \code{\link{igraph}} 
 #' If this is the case, consider manually updating \code{\link{igraph}} using;
-#' \code{install.packages("https://github.com/igraph/rigraph/releases/download/v1.1.0/igraph_1.1.0.zip", repos=NULL, method="libcurl")}
+#' \code{install.packages("https://github.com/igraph/rigraph/releases/download/v1.1.0/igraph_1.1.0.zip", repos=NULL, method="libcurl")
 cytof_dimReduction <- function(data,
                                markers = NULL,
                                method = c("umap", "tsne", "pca", "isomap", "diffusionmap", "NULL"), 
@@ -71,17 +72,18 @@ cytof_dimReduction <- function(data,
     
     switch(method,
            umap = {
-             if (!py_module_available(module = "umap")) {
-               stop("Cannot find UMAP, please install through pip (e.g. pip install umap-learn).")
-             }
+             #if (!py_module_available(module = "umap")) {
+             # stop("Cannot find UMAP, please install through pip (e.g. pip install umap-learn).")
+             #}
              cat("  Running UMAP...with seed", tsneSeed)
-             umap_import <- import(module = "umap", delay_load = TRUE)
+             #umap_import <- import(module = "umap", delay_load = TRUE)
 
-             umap <- umap_import$UMAP(n_neighbors = as.integer(x = umap_neighbor)
+             umap <- umap::umap(marker_filtered_data, n_neighbors = as.integer(x = umap_neighbor)
                                       , n_components = as.integer(x = out_dim)
                                       , metric = distMethod 
                                       , min_dist = umap_min_dist)
-             mapped <- umap$fit_transform(as.matrix(x = marker_filtered_data))
+             #mapped <- umap$fit_transform(as.matrix(x = marker_filtered_data))
+             mapped <- umap$Y
            }
            ,tsne={
                cat("  Running t-SNE...with seed", tsneSeed)
