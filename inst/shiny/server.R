@@ -564,7 +564,7 @@ shinyServer = function(input, output, session)
               temp_name = dr_names[i]
             }
             
-            analysis_results$temp1 <<- str_replace_all(analysis_results$dimRedMarkers, "<", "&lt;")	
+            analysis_results$temp1 <<- str_replace_all(analysis_results$dimRedMarkers, "<", "&lt;")
             analysis_results$temp2 <<- str_replace_all(analysis_results$temp1, ">", "&gt;")
             script1 = create_script(paste0("## ", temp_name, " plot color by sample\n", "Based on the markers: "
                                         , paste0(analysis_results$temp2, collapse = ', ')), {
