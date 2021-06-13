@@ -583,9 +583,9 @@ dr_panel = fluidPage(
                       , numericInput('seed', 'Seed', value = 42))
 )
 cluster_panel = fluidPage(
-  tags$div(title="The method(s) for clustering, including \"DensVM\", \"ClusterX\", \"Rphenograph\", and \"FlowSOM\". "
+  tags$div(title="The method(s) for clustering, including \"DensVM\", \"FastPG\", \"ClusterX\", \"Rphenograph\", and \"FlowSOM\". "
            , selectInput('cluster_method', 'Cluster Method(s)'
-                         , choices = c('Rphenograph', 'ClusterX', 'DensVM', 'FlowSOM')
+                         , choices = c('Rphenograph', 'FastPG', 'ClusterX', 'DensVM', 'FlowSOM')
                          , multiple = T
                          , selected = c('Rphenograph'))
   )
@@ -594,6 +594,8 @@ cluster_panel = fluidPage(
   )
   , tags$div(title="Number of clusters for meta clustering in FlowSOM."
              , numericInput('flowsom_k', 'FlowSOM_k', value = 40))
+  , tags$div(title="Number of clusters for meta clustering in FastPG."
+             , numericInput('fastpg_k', 'FastPG_k', value = 30))
 )
 pseudotime_panel = fluidPage(
   tags$div(title="The method used for cellular progression analysis including \"diffusion map\" and \"isomap\"\n\nIf \"NULL\" was selected, no progression estimation will be performed."
