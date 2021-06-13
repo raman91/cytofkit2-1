@@ -88,6 +88,7 @@ shinyServer = function(input, output, session)
                  visualizationMethods = tolower(input$dr_method),
                  progressionMethod = input$progressionMethods,
                  Rphenograph_k = input$rphenograph_k,
+                 FastPG_k = input$fastpg_k,
                  FlowSOM_k = input$flowsom_k,
                  seed = input$seed,
                  clusterSampleSize = 500,
