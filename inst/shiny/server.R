@@ -77,7 +77,7 @@ shinyServer = function(input, output, session)
     withProgress(
       {
         # browser()
-        cytofkit2(fcsFiles = inputs[["fcsFiles"]],
+        cytofkit(fcsFiles = inputs[["fcsFiles"]],
                  markers = input$markers,
                  projectName = input$project_name,
                  mergeMethod = input$merge_method,
@@ -120,7 +120,7 @@ shinyServer = function(input, output, session)
       # browser()
       cur_dir = './'
       files = dir(path = cur_dir, pattern = input$project_name)
-      zip(file, files)
+      zip::zip(file, files)
     }
   )
   
@@ -488,7 +488,7 @@ shinyServer = function(input, output, session)
         # ## open the results directory
         # opendir(v$data$resultDir)
         files = dir(path = res_folder, pattern = ".*", full.names = T)
-        zip(file, files)
+        zip::zip(file, files)
       })
       
     }
@@ -496,7 +496,7 @@ shinyServer = function(input, output, session)
   
   output$reportButton = downloadHandler(
     filename = function() {
-      paste0(input$project_name, '_report.pdf')
+      paste0(input$project_name, '_report.html')
     },
     content = function(file) {
       # browser()
@@ -564,8 +564,10 @@ shinyServer = function(input, output, session)
               temp_name = dr_names[i]
             }
             
-            script1 = create_script(paste0("## ", temp_name, " plot color by sample\n", "Based on the makers: "
-                                        , paste0(analysis_results$dimRedMarkers, collapse = ',')), {
+            analysis_results$temp1 <<- str_replace_all(analysis_results$dimRedMarkers, "<", "&lt;")	
+            analysis_results$temp2 <<- str_replace_all(analysis_results$temp1, ">", "&gt;")
+            script1 = create_script(paste0("## ", temp_name, " plot color by sample\n", "Based on the markers: "
+                                        , paste0(analysis_results$temp2, collapse = ', ')), {
                                           plot_scatter(analysis_results$dimReducedRes[[dr_names[i]]]
                                                        , analysis_results$sampleInfo[, "cellSample", drop = F]) + coord_fixed()
                                         }, values = c("dr_names[i]"))
@@ -573,7 +575,7 @@ shinyServer = function(input, output, session)
               p = plot_split_scatter(analysis_results$dimReducedRes[[dr_names[i]]]
                                      , analysis_results$sampleInfo[, "cellSample", drop = F], ncol = 2, show_legend = F)
               p[[1]]
-            }, values = c("dr_names[i]"), fig_width = 8, fig_height = 4)
+            }, values = c("dr_names[i]"), fig_width = 8, fig_height = 20)
             forplot3 <<- as.data.frame(cbind(analysis_results$dimReducedRes[[dr_names[i]]], analysis_results$expressionData[,analysis_results$dimRedMarkers, drop = F]))
             script3 = create_script(paste0("## ", temp_name, " plot color by marker expression"), {
               for (x in 1:length(analysis_results$dimRedMarkers)){
